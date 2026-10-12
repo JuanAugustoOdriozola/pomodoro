@@ -1,0 +1,146 @@
+:root {
+  --text: #f4f2fb;
+  --muted: rgba(244, 242, 251, 0.45);
+  --glass: rgba(18, 16, 30, 0.45);
+  --line: rgba(255, 255, 255, 0.14);
+  --grow: 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  font-family: 'Outfit', system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body, #root { height: 100%; }
+body { color: var(--text); background: #000; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Color de acento: violeta para enfoque, turquesa para descanso */
+.app { --accent: #a78bfa; --accent-strong: #8b6fe0; }
+.app[data-kind='break'] { --accent: #5eead4; --accent-strong: #2bb9a3; }
+
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+  background: #000;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  padding: 0 20px 48px;
+}
+
+/* ===== Tabs minimalistas: solo texto, subrayado en la activa ===== */
+.tabs {
+  font-size: 1rem;
+  display: flex;
+  gap: 1.8em;
+  flex-wrap: wrap;
+  justify-content: center;
+  transition: font-size var(--grow);
+}
+.tab {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.45em;
+  padding: 0.4em 0.1em;
+  color: var(--muted);
+  font-size: 0.95em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.25s;
+}
+.tab::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+.tab:hover { color: var(--text); }
+.tab.is-active { color: var(--text); }
+.tab.is-active::after { transform: scaleX(1); }
+.tab-min { font-size: 0.75em; font-weight: 400; opacity: 0.7; }
+.tab-count {
+  font-size: 0.7em; color: var(--accent); font-weight: 600;
+}
+
+/* ===== Reloj ===== */
+.clock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+}
+.display {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: font-size var(--grow);
+}
+.time {
+  font-size: clamp(3.6rem, 13vw, 5.6rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+  transition: font-size var(--grow);
+}
+
+/* ===== Controles ===== */
+.controls {
+  font-size: 1rem;
+  display: flex;
+  gap: 0.9em;
+  align-items: center;
+  transition: font-size var(--grow);
+}
+.btn-main {
+  min-width: 12em; padding: 1em 2.1em; border-radius: 999px; font-weight: 600;
+  background: var(--accent-strong); color: #fff;
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--accent-strong) 45%, transparent);
+  transition: transform 0.15s, filter 0.2s;
+}
+.btn-main:hover { filter: brightness(1.1); }
+.btn-main:active { transform: scale(0.97); }
+.btn-round {
+  width: 3.4em; height: 3.4em; border-radius: 50%; display: grid; place-items: center;
+  background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(14px);
+  transition: background 0.2s;
+}
+.btn-round:hover { background: rgba(255, 255, 255, 0.14); }
+.controls .btn-round svg { width: 1.25em; height: 1.25em; }
+
+.brand .btn-round { width: 44px; height: 44px; }
+.brand .btn-round svg { width: 20px; height: 20px; }
+
+/* ===== Estado agrandado (queda fijo hasta clic en el número o Esc) ===== */
+.app.is-expanded .time { font-size: min(32vw, 50vh); cursor: zoom-out; }
+.app.is-expanded .tabs,
+.app.is-expanded .display,
+.app.is-expanded .controls { font-size: 1.35rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
